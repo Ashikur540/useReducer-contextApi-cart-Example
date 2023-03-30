@@ -1,8 +1,16 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard";
 import { PRODUCT_CONTEXT } from "../context/ProductProvider";
 
 const Home = () => {
+  // initial check
+  const reduxState = useSelector((state) => state)
+  console.log(reduxState)
+
+
+
+
   const { state } = useContext(PRODUCT_CONTEXT)
 
   const { products, loading, error } = state;
@@ -17,7 +25,7 @@ const Home = () => {
         error && <><p className="text-center text-4xl font-semibold text-red-600">ERROR😓</p></>
       }
       {
-        products.length > 0 && loading === false && products?.map((product, i) => <ProductCard product={product} key={i}></ProductCard>)
+        products.length > 0 && loading === false && products?.map((product) => <ProductCard product={product} key={product._id}></ProductCard>)
       }
     </div >
   );

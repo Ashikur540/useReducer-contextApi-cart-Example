@@ -1,6 +1,3 @@
-// export const FETCH_START = 'products/fetchStart'
-// export const FETCH_END = 'products/fetchEnd'
-// export const ERROR = 'products/error'
 
 
 export const actionTypes = {

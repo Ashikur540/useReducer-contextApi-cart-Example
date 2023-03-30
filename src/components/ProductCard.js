@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
-import { BiListPlus } from "react-icons/bi";
-import { PRODUCT_CONTEXT } from "../context/ProductProvider";
-import { actionTypes } from '../state/productsState/actionTypes';
+import React from "react";
+import { BiListPlus, BiTrash } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router";
+import { addToCart, removeCart } from "../redux/products/action";
 const ProductCard = ({ product }) => {
-  const { dispatch } = useContext(PRODUCT_CONTEXT)
+  // const { dispatch } = useContext(PRODUCT_CONTEXT)
+  const dispatch = useDispatch();
+  const { pathname } = useLocation()
+
   return (
     <div
       className='shadow-lg rounded-3xl border  p-3 flex flex-col text-indigo-900'
 
     >
+      <div>{product.qty}</div>
       <div className='h-52 w-52 mx-auto'>
         <img src={product.image} alt={product.model} />
       </div>
@@ -22,16 +27,38 @@ const ProductCard = ({ product }) => {
         </ul>
       </div>
       <div className='flex gap-2 mt-5'>
-        <button className='bg-indigo-500 rounded-full py-1 px-2 flex-1 text-white text-bold'
-          onClick={() => dispatch({ type: actionTypes.ADD_TO_CART, payload: product })}>
-          Add to cart
-        </button>
-        <button
-          title='Add to wishlist'
-          className='bg-indigo-500  py-1 px-2 rounded-full'
-        >
-          <BiListPlus className='text-white' />
-        </button>
+
+        {
+          pathname.includes("cart") ||
+          <button className='bg-indigo-500 rounded-full py-1 px-2 flex-1 text-white text-bold'
+            // onClick={() => dispatch({ type: ADD_TO_CART, payload: product })}
+            onClick={() => dispatch(addToCart(product))}
+
+          >
+            Add to cart
+          </button>
+
+        }
+        {
+          pathname.includes("cart") ||
+          <button
+            title='Add to wishlist'
+            className='bg-indigo-500  py-1 px-2 rounded-full'
+          >
+            <BiListPlus className='text-white' />
+          </button>
+        }
+
+        {
+          pathname.includes("cart") &&
+          <button
+            title='Add to wishlist'
+            className=' bg-red-600  py-1 px-2 rounded-full'
+          >
+            <BiTrash className='text-white' onClick={() => dispatch(removeCart(product))} />
+
+          </button>
+        }
       </div>
     </div>
   );
